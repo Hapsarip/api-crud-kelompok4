@@ -14,11 +14,22 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true,
-    unique: true,
   },
   activity: {
     type: [Schema.Types.ObjectId],
     ref: 'Activity'
+  },
+  
+  //dummy atribut untuk coba2
+  dummyDate: {
+    type: Date,
+    require: false,
+    default: Date.now()
+  },
+  isCompleted: {
+    type: Boolean,
+    require: true,
+    default: false
   }
 })
 
