@@ -7,7 +7,8 @@ const ActivitySchema = mongoose.Schema({
   },
   actdate: {
     type: Date,
-    required: true,
+    required: false,
+    default: Date.now()
   },
   actcategory: {
     type: String,
@@ -19,11 +20,11 @@ const ActivitySchema = mongoose.Schema({
   },
   iscompleted:{
     type: Boolean,
-    required: true,
+    required: false,
     default: false,
   },
   actuser: {
-    type: [Schema.Types.ObjectId],
+    type: [mongoose.Schema.Types.ObjectId],
     ref: 'User'
   }
 })

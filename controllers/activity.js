@@ -5,7 +5,7 @@ const activitySchema = require ('../models/activity')
 Get All Activities from Database
 Path Name: server/user/{ user id }/activities
 */
-export const getActivities = async (req, res) => {
+exports.getActivities = async (req, res) => {
     try {
       const activities = await activitySchema.find()
       res.json(activities)
@@ -18,7 +18,7 @@ export const getActivities = async (req, res) => {
 Get Specific Activity from Database by their Id
 Path Name: server/users/{ user id }/activity/{ activity id}
 */
-export const getActivity = async (req, res) => {
+exports.getActivity = async (req, res) => {
     try {
       const activityById = await activitySchema.findById( req.params.id )
       res.json(activityById)
@@ -27,7 +27,7 @@ export const getActivity = async (req, res) => {
     }
 }
 
-export const newActivity = async (req, res) => {   
+exports.newActivity = async (req, res) => {   
     const user = new activitySchema(req.body)
     try {
       const savedActivity = await activitySchema.save()
@@ -37,7 +37,7 @@ export const newActivity = async (req, res) => {
     }
 }
 
-export const deleteActivity = async (req, res) => { 
+exports.deleteActivity = async (req, res) => { 
     try {
       const removedActivity = await activitySchema.remove({ _id : req.params.id })
       res.json(removedActivity)
