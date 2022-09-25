@@ -1,3 +1,47 @@
 const userSchema = require ('../models/user')
 const activitySchema = require ('../models/activity')
 
+/*
+Get All Activities from Database
+Path Name: server/user/{ user id }/activities
+*/
+export const getActivities = async (req, res) => {
+    try {
+      const activities = await activitySchema.find()
+      res.json(activities)
+    } catch(err) {
+      res.json({ message : err.message })
+    }
+}
+
+/*
+Get Specific Activity from Database by their Id
+Path Name: server/users/{ user id }/activity/{ activity id}
+*/
+export const getActivity = async (req, res) => {
+    try {
+      const activityById = await activitySchema.findById( req.params.id )
+      res.json(activityById)
+    } catch(err) {
+      res.json({ message : err.message })
+    }
+}
+
+export const newActivity = async (req, res) => {   
+    const user = new activitySchema(req.body)
+    try {
+      const savedActivity = await activitySchema.save()
+      res.json(savedActivity)
+    } catch(err) {
+      res.json({ message : err.message })
+    }
+}
+
+export const deleteActivity = async (req, res) => { 
+    try {
+      const removedActivity = await activitySchema.remove({ _id : req.params.id })
+      res.json(removedActivity)
+    } catch(err) {
+      res.json({ message : err.message })
+    }
+}
