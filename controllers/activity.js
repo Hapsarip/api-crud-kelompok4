@@ -26,3 +26,22 @@ exports.getActivity = async (req, res) => {
       res.json({ message : err.message })
     }
 }
+
+exports.newActivity = async (req, res) => {   
+    const user = new activitySchema(req.body)
+    try {
+      const savedActivity = await activitySchema.save()
+      res.json(savedActivity)
+    } catch(err) {
+      res.json({ message : err.message })
+    }
+}
+
+exports.deleteActivity = async (req, res) => { 
+    try {
+      const removedActivity = await activitySchema.remove({ _id : req.params.id })
+      res.json(removedActivity)
+    } catch(err) {
+      res.json({ message : err.message })
+    }
+}
