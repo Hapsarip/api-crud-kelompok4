@@ -1,5 +1,6 @@
 const express = require('express')
 const userRoutes = require('./routes/user')
+const activityRoutes = require('./routes/activity')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 require('dotenv').config()
@@ -10,6 +11,7 @@ app.use(bodyParser.json())
 
 //Route
 app.use("/users", userRoutes)
+app.use("/activity", activityRoutes)
 app.get("/", (req, res) => res.send("Welcome to the Users API!"))
 app.all("*", (req, res) => res.send("You've tried reaching a route that doesn't exist."))
 
