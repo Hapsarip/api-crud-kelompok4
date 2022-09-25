@@ -21,6 +21,10 @@ const ActivitySchema = mongoose.Schema({
     type: Boolean,
     required: true,
     default: false,
+  },
+  actuser: {
+    type: [Schema.Types.ObjectId],
+    ref: 'User'
   }
 })
 
