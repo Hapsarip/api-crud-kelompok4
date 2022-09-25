@@ -48,9 +48,9 @@ Post Activity Data to Database
 Path Name: server/activity/
 */
 exports.newActivity = async (req, res) => {   
-    const user = new activitySchema(req.body)
+    const activity = new activitySchema(req.body)
     try {
-      const savedActivity = await activitySchema.save()
+      const savedActivity = await activity.save()
       res.json(savedActivity)
     } catch(err) {
       res.json({ message : err.message })
