@@ -3,7 +3,7 @@ const activitySchema = require ('../models/activity')
 
 /*
 Get All Activities from Database
-Path Name: server/user/{ user id }/activities
+Path Name: server/activity
 */
 exports.getActivities = async (req, res) => {
     try {
@@ -16,7 +16,7 @@ exports.getActivities = async (req, res) => {
 
 /*
 Get Specific Activity from Database by their Id
-Path Name: server/users/{ user id }/activity/{ activity id}
+Path Name: server/activity/{ activity id }
 */
 exports.getActivity = async (req, res) => {
     try {
@@ -27,6 +27,27 @@ exports.getActivity = async (req, res) => {
     }
 }
 
+/*
+Edit Activity Data from Database by their Id
+Path Name: server/activity/{ activity id }
+*/
+exports.editActivity = async (req,res) => {
+    try { 
+      const updatedPost = await activitySchema.updateOne (
+        { _id : req.params.id },
+        { $set: req.body }
+      )
+      res.json(updatedPost)
+    } catch(err) {
+        res.json({ message : err.message })
+    }
+}
+
+/*
+Post Activity Data to Database
+Path Name: server/activity/
+*/
+
 exports.newActivity = async (req, res) => {   
     const user = new activitySchema(req.body)
     try {
@@ -36,6 +57,11 @@ exports.newActivity = async (req, res) => {
       res.json({ message : err.message })
     }
 }
+
+/*
+Delete Activity Data from Database by their Id
+Path Name: server/activity/{ activity id }
+*/
 
 exports.deleteActivity = async (req, res) => { 
     try {
