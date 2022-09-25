@@ -15,10 +15,6 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-  },
-  activity: {
-    type: [Schema.Types.ObjectId],
-    ref: 'Activity'
   }
 })
 
