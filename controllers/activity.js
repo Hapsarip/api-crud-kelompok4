@@ -47,6 +47,7 @@ exports.editActivity = async (req,res) => {
 Post Activity Data to Database
 Path Name: server/activity/
 */
+
 exports.newActivity = async (req, res) => {   
     const user = new activitySchema(req.body)
     try {
@@ -61,6 +62,7 @@ exports.newActivity = async (req, res) => {
 Delete Activity Data from Database by their Id
 Path Name: server/activity/{ activity id }
 */
+
 exports.deleteActivity = async (req, res) => { 
     try {
       const removedActivity = await activitySchema.remove({ _id : req.params.id })
