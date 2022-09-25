@@ -83,17 +83,6 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-// router.get('/find/:name', async (req, res) => {
-//   const name = req.params.name
-//   try {
-//     const userByName = await userSchema.find({ username : { '$regex' : name, '$options' : 'i' }})
-    
-//     res.json(userByName)
-//   } catch(err) {
-//     res.json({ message : err.message })
-//   }
-// })
-
 /*
 Delete User Data from Database by their Id
 Path Name: server/users/{ user id }
