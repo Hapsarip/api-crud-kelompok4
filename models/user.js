@@ -8,6 +8,16 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  dummyDate: {
+    type: Date,
+    require: false,
+    default: Date.now()
+  },
+  isCompleted: {
+    type: Boolean,
+    require: true,
+    default: false
   }
 })
 
