@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getUser, getUsers } = require('../controllers/activity');
+const { getActivities, getActivity } = require('../controllers/activity');
 
 router.get('/', getActivities);
 router.get('/:id', getActivity);

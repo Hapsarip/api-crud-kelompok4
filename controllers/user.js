@@ -4,7 +4,7 @@ const userSchema = require ('../models/user')
 Get All User Data from Database
 Path Name: server/users/
 */
-export const getUsers = async (req, res) => {
+exports.getUsers = async (req, res) => {
     try {
       const users = await userSchema.find()
       res.json(users)
@@ -17,7 +17,7 @@ export const getUsers = async (req, res) => {
 Post User Data to Database
 Path Name: server/users/
 */
-export const newUser = async (req, res) => {   
+exports.newUser = async (req, res) => {   
     const user = new userSchema(req.body)
     try {
       const savedPost = await user.save()
@@ -32,7 +32,7 @@ export const newUser = async (req, res) => {
 Get Specific User Data from Database by their Id
 Path Name: server/users/{ user id }
 */
-export const getUser = async (req, res) => {
+exports.getUser = async (req, res) => {
     try {
       const userById = await userSchema.findById( req.params.id )
       res.json(userById)
@@ -45,7 +45,7 @@ export const getUser = async (req, res) => {
 Delete User Data from Database by their Id
 Path Name: server/users/{ user id }
 */
-export const deleteUser = async (req, res) => { 
+exports.deleteUser = async (req, res) => { 
     try {
       const removedPost = await userSchema.remove({ _id : req.params.id })
       res.json(removedPost)
@@ -58,7 +58,7 @@ export const deleteUser = async (req, res) => {
 Edit User Data from Database by their Id
 Path Name: server/users/{ user id }
 */
-export const editUser = async (req,res) => {
+exports.editUser = async (req,res) => {
     try { 
       const updatedPost = await userSchema.updateOne (
         { _id : req.params.id },
