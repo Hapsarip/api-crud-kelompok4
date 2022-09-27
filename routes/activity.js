@@ -1,35 +1,40 @@
 const express = require('express');
 const router = express.Router();
-const { getActivities, getActivity, editActivity, newActivity, deleteActivity } = require('../controllers/activity');
+const { getActivities, getActivity, editActivity, newActivity, deleteActivity, findActivity } = require('../controllers/activity');
+const activitySchema = require ('../models/activity')
 
 /*
 Get All Activities from Database
 Path Name: server/activity
+
+Post Activity Data to Database
+Path Name: server/activity/
 */
-router.get('/', getActivities);
+
+router
+  .route('/')
+  .get(getActivities)
+  .post(newActivity)
+
+router
+  .route('/search')
+  .get(findActivity)
 
 /*
 Get Specific Activity from Database by their Id
 Path Name: server/activity/{ activity id }
-*/
-router.get('/:id', getActivity);
 
-/*
 Edit Activity Data from Database by their Id
 Path Name: server/activity/{ activity id }
-*/
-router.patch('/:id', editActivity);
 
-/*
-Post Activity Data to Database
-Path Name: server/activity/
-*/
-router.post("/", newActivity)
-
-/*
 Delete Activity Data from Database by their Id
 Path Name: server/activity/{ activity id }
 */
-router.delete("/:id", deleteActivity)
+
+router
+  .route('./:id')
+  .get(getActivity)
+  .patch(editActivity)
+  .delete(deleteActivity)
 
 module.exports = router;

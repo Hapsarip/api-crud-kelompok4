@@ -1,31 +1,31 @@
 const mongoose = require('mongoose')
 
 const ActivitySchema = mongoose.Schema({
-  actname: {
+  actName: {
     type: String,
     required: true,
   },
-  actdate: {
+  actDate: {
     type: Date,
     required: false,
     default: Date.now()
   },
-  actcategory: {
+  actCategory: {
     type: String,
     required: true,
   },
-  actdescription: {
+  actDescription: {
     type: String,
     required: false,
   },
-  iscompleted:{
+  isCompleted:{
     type: Boolean,
     required: false,
     default: false,
   },
-  actuser: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: 'User'
+  actUser: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   }
 })
 
