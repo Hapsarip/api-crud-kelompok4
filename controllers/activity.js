@@ -1,5 +1,5 @@
-const userSchema = require ('../models/user')
-const activitySchema = require ('../models/activity')
+const User = require ('../models/user')
+const Activity = require ('../models/activity')
 
 /*
 Get All Activities from Database
@@ -7,11 +7,35 @@ Path Name: server/activity
 */
 exports.getActivities = async (req, res) => {
     try {
-      const activities = await activitySchema.find().populate({path: "actuser", model: userSchema})
+      const activities = await Activity.find().populate({path: "actUser", model: userSchema})
       res.json(activities)
     } catch(err) {
       res.json({ message : err.message })
     }
+}
+
+/*
+Post Activity Data to Database
+Path Name: server/activity/
+*/
+exports.newActivity = async (req, res) => { 
+  try {
+    const activity = new Activity({
+      ...req.body,
+      actuser: req.body.id
+    })
+
+    const updatedUser = await User.updateOne(
+      { _id : req.body.id },
+      { $push: { activities: activity._id } }
+    )
+
+    const savedActivity = await activity.save()
+    res.json({savedActivity, updatedUser})
+
+  } catch(err) {
+    res.json({ message : err.message })
+  }
 }
 
 /*
@@ -20,7 +44,7 @@ Path Name: server/activity/{ activity id }
 */
 exports.getActivity = async (req, res) => {
     try {
-      const activityById = await activitySchema.findById( req.params.id )
+      const activityById = await Activity.findById( req.params.id )
       res.json(activityById)
     } catch(err) {
       res.json({ message : err.message })
@@ -33,7 +57,7 @@ Path Name: server/activity/{ activity id }
 */
 exports.editActivity = async (req,res) => {
     try { 
-      const updatedPost = await activitySchema.updateOne (
+      const updatedPost = await Activity.updateOne (
         { _id : req.params.id },
         { $set: req.body }
       )
@@ -44,40 +68,65 @@ exports.editActivity = async (req,res) => {
 }
 
 /*
-Post Activity Data to Database
-Path Name: server/activity/
+Delete Activity Data from Database by their Id
+Path Name: server/activity/{ activity id }
 */
-
-exports.newActivity = async (req, res) => { 
+exports.deleteActivity = async (req, res) => { 
     try {
-      const activity = new activitySchema({
-        ...req.body,
-        actuser: req.body.id
-      })
-
-      const updatedUser = await userSchema.updateOne(
-        { _id : req.body.id },
-        { $push: { activities: activity._id } }
-      )
-
-      const savedActivity = await activity.save()
-      res.json({savedActivity, updatedUser})
-
-    } catch {
+      const removedActivity = await Activity.remove({ _id : req.params.id })
+      res.json(removedActivity)
+    } catch(err) {
       res.json({ message : err.message })
     }
 }
 
 /*
-Delete Activity Data from Database by their Id
+Get Specific Activity by Custom Parameter
 Path Name: server/activity/{ activity id }
 */
+exports.findActivity = async (req, res) => {
+  try{
 
-exports.deleteActivity = async (req, res) => { 
-    try {
-      const removedActivity = await activitySchema.remove({ _id : req.params.id })
-      res.json(removedActivity)
-    } catch(err) {
-      res.json({ message : err.message })
+    const page = req.query.page - 1 || 0;
+    const limit = req.query.limit || 5;
+    const search = req.query.search || "";
+    
+    let sortby = req.query.sort || "actName";
+    let mode = req.query.mode || "asc";
+  
+    const activity = await activitySchema
+      .find({ actName: { 
+        $regex: search, 
+        $options: "i" 
+      }})
+      .skip(page * limit)
+      .limit(limit);
+  
+    // Sorting
+    function sortBy(a, b){
+      if(typeof a[sortby] === 'string'){
+        return a[sortby].localeCompare(b[sortby])
+      } else {
+        return a[sortby] - b[sortby]
+      }
     }
+
+    if (mode === "desc"){
+      activity.sort(sortBy).reverse()
+    } else {
+      activity.sort(sortBy)
+    }
+
+    const response = {
+      page: page + 1,
+      limit,
+      data: {
+        activity
+      }
+    };
+
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(400).json({ message : err.message });
+  }
 }

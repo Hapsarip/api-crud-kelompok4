@@ -5,36 +5,29 @@ const router = express.Router();
 /*
 Get All User Data from Database
 Path Name: server/users/
-*/
-router.get('/', getUsers);
 
-/*
 Post User Data to Database
 Path Name: server/users/
 */
-router.post('/', newUser);
+router
+  .route('/')
+  .get(getUsers)
+  .post(newUser)
 
 /*
 Get Specific User Data from Database by their Id
 Path Name: server/users/{ user id }
-*/
-router.get('/:id', getUser);
 
-/*
 Delete User Data from Database by their Id
 Path Name: server/users/{ user id }
-*/
-router.delete('/:id', deleteUser);
 
-/*
 Edit User Data from Database by their Id
 Path Name: server/users/{ user id }
 */
-router.patch('/:id', editUser);
-
-/*
-Get Specifif Item from Database
-Path Name: server/users/
-*/
+router
+  .route('/')  
+  .get(getUser)
+  .delete(deleteUser)
+  .patch(editUser);
 
 module.exports = router;

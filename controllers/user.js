@@ -1,5 +1,5 @@
-const userSchema = require ('../models/user')
-const activitySchema = require ('../models/activity')
+const User = require ('../models/user')
+const Activity = require ('../models/activity')
 
 /*
 Get All User Data from Database
@@ -7,7 +7,7 @@ Path Name: server/users/
 */
 exports.getUsers = async (req, res) => {
     try {
-      const users = await userSchema.find().populate({path: "activities", model: activitySchema})
+      const users = await User.find().populate({path: "activities", model: Activity})
       res.json(users)
     } catch(err) {
       res.json({ message : err.message })
@@ -19,7 +19,7 @@ Post User Data to Database
 Path Name: server/users/
 */
 exports.newUser = async (req, res) => {   
-    const user = new userSchema(req.body)
+    const user = new User(req.body)
     try {
       const savedPost = await user.save()
       res.json(savedPost)
@@ -35,7 +35,7 @@ Path Name: server/users/{ user id }
 */
 exports.getUser = async (req, res) => {
     try {
-      const userById = await userSchema.findById( req.params.id )
+      const userById = await User.findById( req.params.id )
       res.json(userById)
     } catch(err) {
       res.json({ message : err.message })
@@ -48,7 +48,7 @@ Path Name: server/users/{ user id }
 */
 exports.deleteUser = async (req, res) => { 
     try {
-      const removedPost = await userSchema.remove({ _id : req.params.id })
+      const removedPost = await User.remove({ _id : req.params.id })
       res.json(removedPost)
     } catch(err) {
       res.json({ message : err.message })
@@ -61,7 +61,7 @@ Path Name: server/users/{ user id }
 */
 exports.editUser = async (req,res) => {
     try { 
-      const updatedPost = await userSchema.updateOne (
+      const updatedPost = await User.updateOne (
         { _id : req.params.id },
         { $set: req.body }
       )
