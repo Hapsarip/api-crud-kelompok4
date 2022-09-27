@@ -1,4 +1,5 @@
 const userSchema = require ('../models/user')
+const activitySchema = require ('../models/activity')
 
 /*
 Get All User Data from Database
@@ -6,7 +7,7 @@ Path Name: server/users/
 */
 exports.getUsers = async (req, res) => {
     try {
-      const users = await userSchema.find()
+      const users = await userSchema.find().populate({path: "activities", model: activitySchema})
       res.json(users)
     } catch(err) {
       res.json({ message : err.message })
