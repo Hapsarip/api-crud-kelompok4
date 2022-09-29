@@ -8,9 +8,9 @@ Path Name: server/users/
 exports.getUsers = async (req, res) => {
     try {
       const users = await User.find().populate({path: "activities", model: Activity})
-      res.json(users)
+      res.status(200).json(users)
     } catch(err) {
-      res.json({ message : err.message })
+      res.status(400).json({ message : err.message })
     }
 }
 
@@ -22,12 +22,11 @@ exports.newUser = async (req, res) => {
     const user = new User(req.body)
     try {
       const savedPost = await user.save()
-      res.json(savedPost)
+      res.status(200).json(savedPost)
     } catch(err) {
-      res.json({ message : err.message })
+      res.status(400).json({ message : err.message })
     }
 }
-
 
 /*
 Get Specific User Data from Database by their Id
@@ -36,9 +35,9 @@ Path Name: server/users/{ user id }
 exports.getUser = async (req, res) => {
     try {
       const userById = await User.findById( req.params.id )
-      res.json(userById)
+      res.status(200).json(userById)
     } catch(err) {
-      res.json({ message : err.message })
+      res.status(400).json({ message : err.message })
     }
 }
 
@@ -49,9 +48,9 @@ Path Name: server/users/{ user id }
 exports.deleteUser = async (req, res) => { 
     try {
       const removedPost = await User.remove({ _id : req.params.id })
-      res.json(removedPost)
+      res.status(200).json(removedPost)
     } catch(err) {
-      res.json({ message : err.message })
+      res.status(400).json({ message : err.message })
     }
 }
 
@@ -65,9 +64,9 @@ exports.editUser = async (req,res) => {
         { _id : req.params.id },
         { $set: req.body }
       )
-      res.json(updatedPost)
+      res.status(200).json(updatedPost)
     } catch{
-      res.json({ message : err.message })
+      res.status(400).json({ message : err.message })
     }
 }
   

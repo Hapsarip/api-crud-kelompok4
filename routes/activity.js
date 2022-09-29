@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { getActivities, getActivity, editActivity, newActivity, deleteActivity, findActivity } = require('../controllers/activity');
-const activitySchema = require ('../models/activity')
 
 /*
 Get All Activities from Database
