@@ -25,7 +25,7 @@ Edit User Data from Database by their Id
 Path Name: server/users/{ user id }
 */
 router
-  .route('/')  
+  .route('/:id')  
   .get(getUser)
   .delete(deleteUser)
   .patch(editUser);
