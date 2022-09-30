@@ -8,9 +8,9 @@ Path Name: server/activity
 exports.getActivities = async (req, res) => {
     try {
       const activities = await Activity.find().populate({path: "actUser", model: userSchema})
-      res.json(activities)
+      res.status(200).json(activities)
     } catch(err) {
-      res.json({ message : err.message })
+      res.status(400).json({ message : err.message })
     }
 }
 
@@ -31,10 +31,10 @@ exports.newActivity = async (req, res) => {
     )
 
     const savedActivity = await activity.save()
-    res.json({savedActivity, updatedUser})
+    res.status(201).json({savedActivity, updatedUser})
 
   } catch(err) {
-    res.json({ message : err.message })
+    res.status(400).json({ message : err.message })
   }
 }
 
@@ -45,9 +45,9 @@ Path Name: server/activity/{ activity id }
 exports.getActivity = async (req, res) => {
     try {
       const activityById = await Activity.findById( req.params.id )
-      res.json(activityById)
+      res.status(200).json(activityById)
     } catch(err) {
-      res.json({ message : err.message })
+      res.status(400).json({ message : err.message })
     }
 }
 
@@ -61,9 +61,9 @@ exports.editActivity = async (req,res) => {
         { _id : req.params.id },
         { $set: req.body }
       )
-      res.json(updatedPost)
+      res.status(200).json(updatedPost)
     } catch(err) {
-        res.json({ message : err.message })
+      res.status(400).json({ message : err.message })
     }
 }
 
@@ -74,9 +74,9 @@ Path Name: server/activity/{ activity id }
 exports.deleteActivity = async (req, res) => { 
     try {
       const removedActivity = await Activity.remove({ _id : req.params.id })
-      res.json(removedActivity)
+      res.status(200).json(removedActivity)
     } catch(err) {
-      res.json({ message : err.message })
+      res.status(400).json({ message : err.message })
     }
 }
 
