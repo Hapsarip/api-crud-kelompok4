@@ -1,6 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { getActivities, getActivity, editActivity, newActivity, deleteActivity, findActivity } = require('../controllers/activity');
+const { 
+  getActivities, 
+  getActivity, 
+  editActivity, 
+  newActivity, 
+  deleteActivity, 
+  findActivity 
+} = require('../controllers/activity');
 
 /*
 Get All Activities from Database
@@ -31,7 +38,7 @@ Path Name: server/activity/{ activity id }
 */
 
 router
-  .route('./:id')
+  .route('/:id')
   .get(getActivity)
   .patch(editActivity)
   .delete(deleteActivity)

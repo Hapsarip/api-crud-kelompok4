@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
-const customError = require("")
+const customError = require("../utils/errorResponse")
 const { 
   validateSignUp, 
   validateLogin 
@@ -12,8 +12,8 @@ exports.SignUp = async (req, res, next) => {
     // cek agar tidak ada atribut yang sama
 		const { error } = validateSignUp(req.body)
 		if (error)
-			return next(new customError( { message: error.details[0].message }, 400 )) 
-      //res.status(400).send({ message: error.details[0].message })
+			return res.status(400).send({ message: error.details[0].message })
+      //next(new customError( { message: error.details[0].message }, 400 )) 
 
     // check email
 		const user = await User.findOne({ email: req.body.email })
@@ -41,8 +41,8 @@ exports.Login = async (req, res, next) => {
     // cek agar tidak ada atribut yang sama
 		const { error } = validateLogin(req.body);
 		if (error)
-			return next(new customError( { message: error.details[0].message }, 400 )) 
-      //res.status(400).send({ message: error.details[0].message });
+			return res.status(400).send({ message: error.details[0].message });
+      //next(new customError( { message: error.details[0].message }, 400 )) 
 
     // check email
 		const user = await User.findOne({ email: req.body.email });

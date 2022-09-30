@@ -7,7 +7,7 @@ Path Name: server/activity
 */
 exports.getActivities = async (req, res) => {
     try {
-      const activities = await Activity.find().populate({path: "actUser", model: userSchema})
+      const activities = await Activity.find().populate({path: "actUser", model: User})
       res.status(200).json(activities)
     } catch(err) {
       res.status(400).json({ message : err.message })
@@ -22,7 +22,7 @@ exports.newActivity = async (req, res) => {
   try {
     const activity = new Activity({
       ...req.body,
-      actuser: req.body.id
+      actuser: req.body.currentID
     })
 
     const updatedUser = await User.updateOne(
@@ -91,10 +91,10 @@ exports.findActivity = async (req, res) => {
     const limit = req.query.limit || 5;
     const search = req.query.search || "";
     
-    let sortby = req.query.sort || "actName";
+    let sortby = req.query.sort || "actDate";
     let mode = req.query.mode || "asc";
   
-    const activity = await activitySchema
+    const activity = await Activity
       .find({ actName: { 
         $regex: search, 
         $options: "i" 
