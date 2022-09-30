@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const ActivitySchema = mongoose.Schema({
   actName: {
     type: String,
-    required: true,
+    required: true
   },
   actDate: {
     type: Date,
@@ -12,20 +12,20 @@ const ActivitySchema = mongoose.Schema({
   },
   actCategory: {
     type: String,
-    required: true,
+    required: true
   },
   actDescription: {
     type: String,
-    required: false,
+    required: false
   },
   isCompleted:{
     type: Boolean,
     required: false,
-    default: false,
+    default: false
   },
   actUser: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'User'
   }
 })
 
