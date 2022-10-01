@@ -12,7 +12,8 @@ exports.SignUp = async (req, res, next) => {
     // cek agar tidak ada atribut yang sama
 		const { error } = validateSignUp(req.body)
 		if (error)
-			return res.status(400).send({ message: error.details[0].message })
+			return next(new customError( error.details[0].message , 400 ))
+      // res.status(400).send({ message: error.details[0].message })
       //next(new customError( { message: error.details[0].message }, 400 )) 
 
     // check email
@@ -41,9 +42,9 @@ exports.Login = async (req, res, next) => {
     // cek agar tidak ada atribut yang sama
 		const { error } = validateLogin(req.body);
 		if (error)
-			return res.status(400).send({ message: error.details[0].message });
-      //next(new customError( { message: error.details[0].message }, 400 )) 
-
+			return next(new customError( error.details[0].message13, 400 )) 
+      //res.status(400).send({ message: error.details[0].message });
+      
     // check email
 		const user = await User.findOne({ email: req.body.email });
 		if (!user)

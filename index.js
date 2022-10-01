@@ -4,6 +4,7 @@ const activityRoutes = require('./routes/activity')
 const authRoutes = require('./routes/auth')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const errorHandler = require('./middleware/errorHandler')
 require('dotenv').config()
 
 const app = express()
@@ -16,6 +17,8 @@ app
   .use("/activity", activityRoutes)
   .get("/", (req, res) => res.send("Welcome to the API!"))
   .all("*", (req, res) => res.send("You've tried reaching a route that doesn't exist."))
+
+app.use(errorHandler)
 
 //dB
 mongoose
