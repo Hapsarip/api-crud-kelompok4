@@ -1,13 +1,21 @@
 const express = require('express')
+const cors = require('cors');
 const userRoutes = require('./routes/user')
 const activityRoutes = require('./routes/activity')
 const authRoutes = require('./routes/auth')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose')
 const errorHandler = require('./middleware/errorHandler')
 require('dotenv').config()
 
 const app = express()
+const corsConfig = {
+  credentials: true,
+  origin: true,
+};
+app.use(cors(corsConfig));
+app.use(cookieParser());
 app.use(bodyParser.json())
 
 //Route

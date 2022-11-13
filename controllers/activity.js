@@ -2,16 +2,18 @@ const User = require ('../models/user')
 const Activity = require ('../models/activity')
 
 /*
-Get All Activities from Database
+Get All Activities for current User from Database
 Path Name: server/activity
 */
 exports.getActivities = async (req, res) => {
-    try {
-      const activities = await Activity.find().populate({path: "actUser", model: User})
-      res.status(200).json(activities)
-    } catch(err) {
-      res.status(400).json({ message : err.message })
-    }
+  try {
+    const activityById = await Activity.find({ actUser : req.user._id })
+    res
+      .status(200)
+      .json(activityById)
+  } catch(err) {
+    res.status(400).json({ message : err.message })
+  }
 }
 
 /*
@@ -22,11 +24,11 @@ exports.newActivity = async (req, res) => {
   try {
     const activity = new Activity({
       ...req.body,
-      actuser: req.body.currentID
+      actUser: req.user._id
     })
 
     const updatedUser = await User.updateOne(
-      { _id : req.body.id },
+      { _id : req.body.currentID },
       { $push: { activities: activity._id } }
     )
 
