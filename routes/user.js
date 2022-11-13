@@ -12,7 +12,7 @@ Path Name: server/users/
 router
   .route('/')
   .get(getUsers)
-  .post(newUser)
+  // .post(newUser)
 
 /*
 Get Specific User Data from Database by their Id
@@ -26,7 +26,7 @@ Path Name: server/users/{ user id }
 */
 router
   .route('/:id')  
-  .get(getUser)
+  // .get(getUser)
   .delete(deleteUser)
   .patch(editUser);
 

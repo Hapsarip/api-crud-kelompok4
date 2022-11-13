@@ -8,33 +8,25 @@ const {
   deleteActivity, 
   findActivity 
 } = require('../controllers/activity');
+const { authMid } = require('../middleware/authMiddleware')
 
 /*
-Get All Activities from Database
-Path Name: server/activity
-
-Post Activity Data to Database
-Path Name: server/activity/
+Get and Post All Activities from Database
+Path Name: {URI}/activity
 */
 
 router
   .route('/')
-  .get(getActivities)
-  .post(newActivity)
+  .get(authMid, getActivities)
+  .post(authMid, newActivity)
 
 router
   .route('/search')
   .get(findActivity)
 
 /*
-Get Specific Activity from Database by their Id
-Path Name: server/activity/{ activity id }
-
-Edit Activity Data from Database by their Id
-Path Name: server/activity/{ activity id }
-
-Delete Activity Data from Database by their Id
-Path Name: server/activity/{ activity id }
+Get Edit and Delete Specific Activity from Database by their Id
+Path Name: {URI}/activity/{activity id}
 */
 
 router
