@@ -40,13 +40,11 @@ exports.Login = async (req, res, next) => {
 		const { error } = validateLogin(req.body);
 		if (error)
 			return next(new customError( error.details[0].message13, 400 )) 
-      //res.status(400).send({ message: error.details[0].message });
       
     // check email
 		const user = await User.findOne({ email: req.body.email });
 		if (!user)
 			return next(new customError( "Invalid Email or Password", 401 ))
-      //res.status(401).send({ message: "Invalid Email or Password" });
 
     // compare password
 		const validPassword = await bcrypt.compare(
