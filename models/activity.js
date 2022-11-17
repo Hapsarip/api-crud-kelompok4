@@ -23,6 +23,11 @@ const ActivitySchema = mongoose.Schema({
     required: false,
     default: false
   },
+  actStatus:{
+    type: String,
+    required: false,
+    default: "todo"
+  },
   actUser: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
