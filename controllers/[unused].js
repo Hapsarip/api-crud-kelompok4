@@ -72,3 +72,16 @@ exports.getActivities = async (req, res) => {
     res.status(400).json({ message : err.message })
   }
 }
+
+/*
+Get Specific Activity from Database by their Id
+Path Name: server/activity/{ activity id }
+*/
+exports.getActivity = async (req, res) => {
+  try {
+    const activityById = await Activity.findById( req.params.id )
+    res.status(200).json(activityById)
+  } catch(err) {
+    res.status(400).json({ message : err.message })
+  }
+}
