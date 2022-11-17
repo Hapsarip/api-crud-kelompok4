@@ -2,21 +2,6 @@ const User = require ('../models/user')
 const Activity = require ('../models/activity')
 
 /*
-Get All Activities for current User from Database
-Path Name: server/activity
-*/
-exports.getActivities = async (req, res) => {
-  try {
-    const activityById = await Activity.find({ actUser : req.user._id })
-    res
-      .status(200)
-      .json(activityById)
-  } catch(err) {
-    res.status(400).json({ message : err.message })
-  }
-}
-
-/*
 Post Activity Data to Database
 Path Name: server/activity/
 */
@@ -97,10 +82,13 @@ exports.findActivity = async (req, res) => {
     let mode = req.query.mode || "asc";
   
     const activity = await Activity
-      .find({ actName: { 
-        $regex: search, 
-        $options: "i" 
-      }})
+      .find({ 
+        actUser : req.user._id,
+        actName: { 
+          $regex: search, 
+          $options: "i" 
+        },
+      })
       .skip(page * limit)
       .limit(limit);
   
