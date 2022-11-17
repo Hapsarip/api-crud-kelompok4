@@ -57,3 +57,18 @@ exports.getUsers = async (req, res, next) => {
     next(err)
   }
 }
+
+/*
+Get All Activities for current User from Database
+Path Name: server/activity
+*/
+exports.getActivities = async (req, res) => {
+  try {
+    const activityById = await Activity.find({ actUser : req.user._id })
+    res
+      .status(200)
+      .json(activityById)
+  } catch(err) {
+    res.status(400).json({ message : err.message })
+  }
+}

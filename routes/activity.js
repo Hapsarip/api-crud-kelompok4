@@ -17,12 +17,12 @@ Path Name: {URI}/activity
 
 router
   .route('/')
-  .get(authMid, getActivities)
+  .get(authMid, findActivity)
   .post(authMid, newActivity)
 
-router
-  .route('/search')
-  .get(authMid, findActivity)
+// router
+//   .route('/search')
+//   .get(authMid, findActivity)
 
 /*
 Get Edit and Delete Specific Activity from Database by their Id
