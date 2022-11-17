@@ -22,7 +22,7 @@ router
 
 router
   .route('/search')
-  .get(findActivity)
+  .get(authMid, findActivity)
 
 /*
 Get Edit and Delete Specific Activity from Database by their Id
@@ -31,8 +31,8 @@ Path Name: {URI}/activity/{activity id}
 
 router
   .route('/:id')
-  .get(getActivity)
-  .patch(editActivity)
-  .delete(deleteActivity)
+  .get(authMid, getActivity)
+  .patch(authMid, editActivity)
+  .delete(authMid, deleteActivity)
 
 module.exports = router;

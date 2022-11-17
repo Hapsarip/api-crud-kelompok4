@@ -24,7 +24,7 @@ exports.deleteUser = async (req, res, next) => {
     const removedUser = await User.remove({ 
       _id : req.user._id
     })
-    resW
+    res
       .status(200)
       .json(removedUser)
 
