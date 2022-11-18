@@ -12,6 +12,6 @@ router
   .route('/profile')
   .get(authMid, getUsers)
   .delete(authMid, deleteUser)
-  .patch(authMid, editUser);
+  .patch(authMid, editUser)
 
 module.exports = router;
