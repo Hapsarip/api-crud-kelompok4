@@ -12,9 +12,20 @@ require('dotenv').config()
 const app = express()
 const corsConfig = {
   credentials: true,
-  origin: true,
+  origin: "https://listify-seven.vercel.app",
 };
 app.use(cors(corsConfig));
+
+// listify-seven.vercel.app
+
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'https://listify-seven.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 app.use(cookieParser());
 app.use(bodyParser.json())
 

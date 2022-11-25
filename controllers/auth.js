@@ -1,6 +1,7 @@
-const User = require("../models/user");
-const bcrypt = require("bcrypt");
+const User = require("../models/user")
+const bcrypt = require("bcrypt")
 const customError = require("../utils/errorResponse")
+const jwt = require("jsonwebtoken")
 const { 
   validateSignUp, 
   validateLogin 
@@ -59,7 +60,10 @@ exports.Login = async (req, res, next) => {
 		res
       .cookie('auth_token', token, {
         httpOnly: true,
-        sameSite: 'strict'
+        // domain: 'backend-listify.vercel.app',
+        // path: '/',
+        sameSite: 'none',
+        secure: true
       })
       .status(200)
       .send({ 
@@ -73,7 +77,13 @@ exports.Login = async (req, res, next) => {
 
 exports.Logout = async (req, res, next) => {
   try {
-    res.clearCookie('auth_token');
+    res
+      .cookie('auth_token', '', {
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000),
+        sameSite: 'none',
+        secure: true
+      });
     res.status(200).json({ status: 'success' });
   } catch (err) {
     next(err);
