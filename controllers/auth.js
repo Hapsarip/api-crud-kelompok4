@@ -80,7 +80,7 @@ exports.Logout = async (req, res, next) => {
     res
       .cookie('auth_token', '', {
         httpOnly: true,
-        expires: 1000,
+        expires: new Date(Date.now() + 1000),
         sameSite: 'none',
         secure: true
       });
