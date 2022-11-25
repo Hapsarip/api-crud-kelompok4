@@ -30,4 +30,11 @@ UserSchema.methods.generateAuthToken = function () {
 	return token;
 };
 
+UserSchema.methods.generateLogoutToken = function () {
+	const token = jwt.sign({ _id: this._id }, process.env.JWTKey, {
+		expiresIn: "1s",
+	});
+	return token;
+};
+
 module.exports = mongoose.model('User', UserSchema)

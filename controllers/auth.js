@@ -59,8 +59,8 @@ exports.Login = async (req, res, next) => {
 		res
       .cookie('auth_token', token, {
         httpOnly: true,
-        domain: 'backend-listify.vercel.app',
-        path: '/',
+        // domain: 'backend-listify.vercel.app',
+        // path: '/',
         sameSite: 'none',
         secure: true
       })
@@ -76,13 +76,17 @@ exports.Login = async (req, res, next) => {
 
 exports.Logout = async (req, res, next) => {
   try {
-    res.clearCookie('auth_token', {
-      httpOnly: true,
-      domain: 'backend-listify.vercel.app',
-      path: '/',
-      sameSite: 'none',
-      secure: true
-    });
+    const token = user.generateLogoutToken();
+    res
+      .cookie('auth_token', token, 
+      {
+        httpOnly: true,
+        // domain: 'backend-listify.vercel.app',
+        // path: '/',
+        sameSite: 'none',
+        secure: true
+      }
+      );
     res.status(200).json({ status: 'success' });
   } catch (err) {
     next(err);
