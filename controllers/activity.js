@@ -62,7 +62,7 @@ exports.findActivity = async (req, res) => {
   try{
 
     const page = req.query.page - 1 || 0;
-    const limit = req.query.limit || 5;
+    const limit = req.query.limit || 100;
     const search = req.query.search || "";
     
     let sortby = req.query.sort || "actDate";
