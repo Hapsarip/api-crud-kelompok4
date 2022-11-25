@@ -58,8 +58,9 @@ exports.Login = async (req, res, next) => {
 		const token = user.generateAuthToken();
 		res
       .cookie('auth_token', token, {
-        domain: 'backend-listify.vercel.app',
         httpOnly: true,
+        domain: 'backend-listify.vercel.app',
+        path: '/',
         sameSite: 'none',
         secure: true
       })
