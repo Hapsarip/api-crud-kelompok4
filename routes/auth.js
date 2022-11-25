@@ -9,6 +9,6 @@ Path Name: server/user/signup
 */
 router.post('/signup', SignUp)
 router.post('/login', Login)
-router.post('/logout', authMid, Logout)
+router.post('/logout', Logout)
 
 module.exports = router;
