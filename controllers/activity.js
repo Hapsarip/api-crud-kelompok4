@@ -1,5 +1,7 @@
 const User = require ('../models/user')
 const Activity = require ('../models/activity')
+const moment = require('moment')
+moment().format(); 
 
 /*
 Post Activity Data to Database
@@ -21,7 +23,7 @@ exports.newActivity = async (req, res) => {
     res.status(201).json({savedActivity, updatedUser})
 
   } catch(err) {
-    res.status(400).json({ message : err.message })
+    next(err)
   }
 }
 
@@ -37,7 +39,7 @@ exports.editActivity = async (req,res) => {
       )
       res.status(200).json(updatedPost)
     } catch(err) {
-      res.status(400).json({ message : err.message })
+      next(err)
     }
 }
 
@@ -50,7 +52,7 @@ exports.deleteActivity = async (req, res) => {
       const removedActivity = await Activity.remove({ _id : req.params.id })
       res.status(200).json(removedActivity)
     } catch(err) {
-      res.status(400).json({ message : err.message })
+      next(err)
     }
 }
 
@@ -64,37 +66,66 @@ exports.findActivity = async (req, res) => {
     const page = req.query.page - 1 || 0;
     const limit = req.query.limit || 100;
     const search = req.query.search || "";
-    
-    let sortby = req.query.sort || "actDate";
-    let mode = req.query.mode || "asc";
+    // const date = "everytime";
+    const date = req.query.date || "everytime";
+
+    const sortby = ['actDate', '']
+    sortby[1] = req.query.sortby || "actStatus";
+    const mode = req.query.mode || "asc";
   
-    const activity = await Activity
-      .find({ 
+    // Date
+    if (date === "everytime"){
+      var query = { 
         actUser : req.user._id,
         actName: { 
           $regex: search, 
           $options: "i" 
         },
-      })
+      }
+    } else {
+      // date = date.slice(0, 23)
+      const startDate = moment(date).startOf('day');
+      const endDate = moment(date).endOf('day');
+
+      var query = { 
+        actUser : req.user._id,
+        actDate: {
+          $gte: startDate,
+          $lte: endDate
+        },
+        actName: { 
+          $regex: search, 
+          $options: "i" 
+        },
+      }
+    }
+
+    // Get act
+    const activity = await Activity
+      .find(query)
       .skip(page * limit)
       .limit(limit);
   
     // Sorting
-    function sortBy(a, b){
-      if(typeof a[sortby] === 'string'){
-        return a[sortby].localeCompare(b[sortby])
-      } else {
-        return a[sortby] - b[sortby]
-      }
-    }
+    for (var item in sortby){
 
-    if (mode === "desc"){
-      activity.sort(sortBy).reverse()
-    } else {
-      activity.sort(sortBy)
+        function sortBy(a, b){
+          if(typeof a[sortby[item]] === 'string'){
+            return a[sortby[item]].localeCompare(b[sortby[item]])
+          } else {
+            return a[sortby[item]] - b[sortby[item]]
+          }
+        }
+    
+        if (mode === "desc"){
+          activity.sort(sortBy).reverse()
+        } else {
+          activity.sort(sortBy)
+        }
     }
-
+    
     const response = {
+      // dat : moment(dat),
       page: page + 1,
       limit,
       data: {
@@ -104,6 +135,6 @@ exports.findActivity = async (req, res) => {
 
     res.status(200).json(response);
   } catch (err) {
-    res.status(400).json({ message : err.message });
+    next(err)
   }
 }

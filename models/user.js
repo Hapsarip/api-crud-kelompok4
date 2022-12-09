@@ -20,7 +20,11 @@ const UserSchema = mongoose.Schema({
   activities: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Activity',
-  }]
+  }],
+  about: {
+    type: String,
+    required: false
+  }
 })
 
 UserSchema.methods.generateAuthToken = function () {
