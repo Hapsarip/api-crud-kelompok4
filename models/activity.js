@@ -21,7 +21,7 @@ const ActivitySchema = mongoose.Schema({
   actStatus:{
     type: String,
     required: false,
-    default: "todo"
+    default: "2-todo"
   },
   actUser: {
     type: mongoose.Schema.Types.ObjectId,
