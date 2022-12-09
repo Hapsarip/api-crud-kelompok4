@@ -7,7 +7,7 @@ moment().format();
 Post Activity Data to Database
 Path Name: server/activity/
 */
-exports.newActivity = async (req, res) => { 
+exports.newActivity = async (req, res, next) => { 
   try {
     const activity = new Activity({
       ...req.body,
@@ -31,7 +31,7 @@ exports.newActivity = async (req, res) => {
 Edit Activity Data from Database by their Id
 Path Name: server/activity/{ activity id }
 */
-exports.editActivity = async (req,res) => {
+exports.editActivity = async (req, res, next) => {
     try { 
       const updatedPost = await Activity.updateOne (
         { _id : req.params.id },
@@ -47,7 +47,7 @@ exports.editActivity = async (req,res) => {
 Delete Activity Data from Database by their Id
 Path Name: server/activity/{ activity id }
 */
-exports.deleteActivity = async (req, res) => { 
+exports.deleteActivity = async (req, res, next) => { 
     try {
       const removedActivity = await Activity.remove({ _id : req.params.id })
       res.status(200).json(removedActivity)
@@ -60,21 +60,21 @@ exports.deleteActivity = async (req, res) => {
 Get Specific Activity by Custom Parameter
 Path Name: server/activity/{ activity id }
 */
-exports.findActivity = async (req, res) => {
+exports.findActivity = async (req, res, next) => {
   try{
 
     const page = req.query.page - 1 || 0;
     const limit = req.query.limit || 100;
     const search = req.query.search || "";
-    // const date = "everytime";
+    const category = req.query.category || "all";
     const date = req.query.date || "everytime";
 
     const sortby = ['actDate', '']
     sortby[1] = req.query.sortby || "actStatus";
     const mode = req.query.mode || "asc";
-  
+
     // Date
-    if (date === "everytime"){
+    if (date === "everytime" && category === "all"){
       var query = { 
         actUser : req.user._id,
         actName: { 
@@ -82,8 +82,19 @@ exports.findActivity = async (req, res) => {
           $options: "i" 
         },
       }
+    } else if ((date === "everytime")) {
+      var cat = new Array();
+      cat = category.split(",");
+
+      var query = { 
+        actUser : req.user._id,
+        actName: { 
+          $regex: search, 
+          $options: "i" 
+        },
+        actCategory: cat,
+      }
     } else {
-      // date = date.slice(0, 23)
       const startDate = moment(date).startOf('day');
       const endDate = moment(date).endOf('day');
 
@@ -125,7 +136,7 @@ exports.findActivity = async (req, res) => {
     }
     
     const response = {
-      // dat : moment(dat),
+      category: cat,
       page: page + 1,
       limit,
       data: {
