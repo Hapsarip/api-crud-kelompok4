@@ -41,7 +41,7 @@ check more about frontend side [here][frontend-side]
 ## Output Structure
 
 ```shell
-frontend-kelompok4/
+backend-kelompok4/
 ├── controller/
 |   ├── activity.js
 |   ├── auth.js
