@@ -1,11 +1,13 @@
 const User = require ('../models/user')
 const Activity = require ('../models/activity')
+const moment = require('moment')
+moment().format(); 
 
 /*
 Post Activity Data to Database
 Path Name: server/activity/
 */
-exports.newActivity = async (req, res) => { 
+exports.newActivity = async (req, res, next) => { 
   try {
     const activity = new Activity({
       ...req.body,
@@ -21,7 +23,7 @@ exports.newActivity = async (req, res) => {
     res.status(201).json({savedActivity, updatedUser})
 
   } catch(err) {
-    res.status(400).json({ message : err.message })
+    next(err)
   }
 }
 
@@ -29,7 +31,7 @@ exports.newActivity = async (req, res) => {
 Edit Activity Data from Database by their Id
 Path Name: server/activity/{ activity id }
 */
-exports.editActivity = async (req,res) => {
+exports.editActivity = async (req, res, next) => {
     try { 
       const updatedPost = await Activity.updateOne (
         { _id : req.params.id },
@@ -37,7 +39,7 @@ exports.editActivity = async (req,res) => {
       )
       res.status(200).json(updatedPost)
     } catch(err) {
-      res.status(400).json({ message : err.message })
+      next(err)
     }
 }
 
@@ -45,12 +47,12 @@ exports.editActivity = async (req,res) => {
 Delete Activity Data from Database by their Id
 Path Name: server/activity/{ activity id }
 */
-exports.deleteActivity = async (req, res) => { 
+exports.deleteActivity = async (req, res, next) => { 
     try {
       const removedActivity = await Activity.remove({ _id : req.params.id })
       res.status(200).json(removedActivity)
     } catch(err) {
-      res.status(400).json({ message : err.message })
+      next(err)
     }
 }
 
@@ -58,43 +60,83 @@ exports.deleteActivity = async (req, res) => {
 Get Specific Activity by Custom Parameter
 Path Name: server/activity/{ activity id }
 */
-exports.findActivity = async (req, res) => {
+exports.findActivity = async (req, res, next) => {
   try{
 
     const page = req.query.page - 1 || 0;
     const limit = req.query.limit || 100;
     const search = req.query.search || "";
-    
-    let sortby = req.query.sort || "actDate";
-    let mode = req.query.mode || "asc";
-  
-    const activity = await Activity
-      .find({ 
+    const category = req.query.category || "all";
+    const date = req.query.date || "everytime";
+
+    const sortby = ['actDate', '']
+    sortby[1] = req.query.sortby || "actStatus";
+    const mode = req.query.mode || "asc";
+
+    // Date
+    if (date === "everytime" && category === "all"){
+      var query = { 
         actUser : req.user._id,
         actName: { 
           $regex: search, 
           $options: "i" 
         },
-      })
+      }
+    } else if ((date === "everytime")) {
+      var cat = new Array();
+      cat = category.split(",");
+
+      var query = { 
+        actUser : req.user._id,
+        actName: { 
+          $regex: search, 
+          $options: "i" 
+        },
+        actCategory: cat,
+      }
+    } else {
+      const startDate = moment(date).startOf('day');
+      const endDate = moment(date).endOf('day');
+
+      var query = { 
+        actUser : req.user._id,
+        actDate: {
+          $gte: startDate,
+          $lte: endDate
+        },
+        actName: { 
+          $regex: search, 
+          $options: "i" 
+        },
+      }
+    }
+
+    // Get act
+    const activity = await Activity
+      .find(query)
       .skip(page * limit)
       .limit(limit);
   
     // Sorting
-    function sortBy(a, b){
-      if(typeof a[sortby] === 'string'){
-        return a[sortby].localeCompare(b[sortby])
-      } else {
-        return a[sortby] - b[sortby]
-      }
-    }
+    for (var item in sortby){
 
-    if (mode === "desc"){
-      activity.sort(sortBy).reverse()
-    } else {
-      activity.sort(sortBy)
+        function sortBy(a, b){
+          if(typeof a[sortby[item]] === 'string'){
+            return a[sortby[item]].localeCompare(b[sortby[item]])
+          } else {
+            return a[sortby[item]] - b[sortby[item]]
+          }
+        }
+    
+        if (mode === "desc"){
+          activity.sort(sortBy).reverse()
+        } else {
+          activity.sort(sortBy)
+        }
     }
-
+    
     const response = {
+      category: cat,
       page: page + 1,
       limit,
       data: {
@@ -104,6 +146,6 @@ exports.findActivity = async (req, res) => {
 
     res.status(200).json(response);
   } catch (err) {
-    res.status(400).json({ message : err.message });
+    next(err)
   }
 }

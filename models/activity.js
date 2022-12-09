@@ -18,11 +18,6 @@ const ActivitySchema = mongoose.Schema({
     type: String,
     required: false
   },
-  isCompleted:{
-    type: Boolean,
-    required: false,
-    default: false
-  },
   actStatus:{
     type: String,
     required: false,
