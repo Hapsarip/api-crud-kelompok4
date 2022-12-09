@@ -24,6 +24,10 @@ const UserSchema = mongoose.Schema({
   about: {
     type: String,
     required: false
+  },
+  profilepic: {
+    type: String,
+    require: false
   }
 })
 
