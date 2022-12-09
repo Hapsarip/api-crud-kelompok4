@@ -65,7 +65,7 @@ frontend-kelompok4/
 └── ...
 ```
 
-## Fependencies
+## Dependencies
 ```shell
 bcrypt
 body-parser
