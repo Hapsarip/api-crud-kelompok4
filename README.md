@@ -14,7 +14,7 @@
 this is backend side of listify project
 
 A To do list Web App, created for Pemrograman Aplikasi Web class <br/>
-check more about frontend side [here][backend-side]
+check more about frontend side [here][frontend-side]
 
 ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
