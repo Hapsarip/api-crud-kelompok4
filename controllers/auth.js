@@ -40,7 +40,7 @@ exports.Login = async (req, res, next) => {
     // cek agar tidak ada atribut yang sama
 		const { error } = validateLogin(req.body);
 		if (error)
-			return next(new customError( error.details[0].message13, 400 )) 
+			return next(new customError( error.details[0].message, 400 )) 
       
     // check email
 		const user = await User.findOne({ email: req.body.email });

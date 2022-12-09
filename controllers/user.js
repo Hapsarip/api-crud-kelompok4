@@ -37,7 +37,7 @@ exports.deleteUser = async (req, res, next) => {
 Edit User Data from Database by their Id
 Path Name: server/users/{ user id }
 */
-exports.editUser = async (req,res, next) => {
+exports.editUser = async (req, res, next) => {
   try { 
     const updatedUser = await User.updateOne (
       { _id : req.user._id },
