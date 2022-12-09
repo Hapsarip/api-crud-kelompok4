@@ -12,14 +12,12 @@ require('dotenv').config()
 const app = express()
 const corsConfig = {
   credentials: true,
-  origin: "http://localhost:3000",
+  origin: process.env.origin_fe,
 };
 app.use(cors(corsConfig));
 
-// listify-seven.vercel.app
-
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', process.env.origin_fe);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', true);
