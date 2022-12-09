@@ -136,7 +136,6 @@ exports.findActivity = async (req, res, next) => {
     }
     
     const response = {
-      category: cat,
       page: page + 1,
       limit,
       data: {
